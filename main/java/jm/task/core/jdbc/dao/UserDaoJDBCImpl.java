@@ -9,7 +9,6 @@ import java.util.List;
 
 public class UserDaoJDBCImpl extends Util implements UserDao {
     Connection connection = getConnection();
-    PreparedStatement preparedStatement = null;
 
     public UserDaoJDBCImpl() {
     }
@@ -22,8 +21,7 @@ public class UserDaoJDBCImpl extends Util implements UserDao {
                 "age INTEGER, " +
                 "PRIMARY KEY (id))";
 
-        try {
-            preparedStatement = connection.prepareStatement(sql);
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)){
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -53,12 +51,9 @@ public class UserDaoJDBCImpl extends Util implements UserDao {
             preparedStatement.setLong(1, id);
             preparedStatement.executeUpdate();
         }
-        if (connection != null) {
-            connection.close();
-        }
     }
 
-    public List<User> getAllUsers() throws SQLException, NullPointerException {
+    public List<User> getAllUsers()  NullPointerException {
         List<User> getAllUsers1 = new ArrayList<>();
         String sql = "SELECT * FROM kata";
         try (Statement statement = connection.createStatement()) {
@@ -78,10 +73,6 @@ public class UserDaoJDBCImpl extends Util implements UserDao {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            if (connection != null) {
-                connection.close();
-            }
         }
         return getAllUsers1;
     }
