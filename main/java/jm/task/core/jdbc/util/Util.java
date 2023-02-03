@@ -15,6 +15,7 @@ public class Util {
         Connection connection = null;
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
+
             connection = DriverManager.getConnection(DB_URL, DB_NAME, DB_PASSWORD);
             System.out.println("Успешное подключение!");
             connection.setAutoCommit(false);
